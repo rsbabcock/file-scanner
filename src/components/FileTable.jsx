@@ -26,7 +26,7 @@ export default function FileTable({ files = [], onDelete }) {
   );
 
   return (
-    <TableContainer component={Paper} sx={{ width: "50%" }}>
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
       <Table sx={{ minWidth: 400 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -43,14 +43,14 @@ export default function FileTable({ files = [], onDelete }) {
             >
               <TableCell component="th" scope="row">
                 <ListItemContent>
-                  <Typography level="body2" noWrap>
+                  <Typography level="h2" noWrap>
                     {row.path}
                   </Typography>
                 </ListItemContent>
               </TableCell>
               <TableCell>{thumbs(row)}</TableCell>
               <TableCell>
-                <Delete onClick={() => onDelete(idx)}/>
+                <Delete onClick={() => onDelete(idx)} />
               </TableCell>
             </TableRow>
           ))}

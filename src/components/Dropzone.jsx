@@ -1,10 +1,9 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import FileTable from "./FileTable";
 import { useDropzone } from "react-dropzone";
 import { baseStyle, focusedStyle, rejectStyle, acceptStyle } from "./styles";
 
-function MyDropzone() {
-  const [currentFiles, setCurrentFiles] = useState([]);
+function MyDropzone({ uploadedFiles, setUploadedFiles }) {
   const {
     getRootProps,
     getInputProps,
@@ -22,7 +21,7 @@ function MyDropzone() {
           preview: URL.createObjectURL(file),
         })
       );
-      setCurrentFiles([...currentFiles, ...filesWithPreview]);
+      setUploadedFiles([...uploadedFiles, ...filesWithPreview]);
     },
   });
 
@@ -37,12 +36,10 @@ function MyDropzone() {
   );
 
   const DeleteCurrentUpload = (id) => {
-    const currentFilesWithout = currentFiles.filter((_, idx) => idx !== id);
-    console.log("currentFilesWithout", currentFilesWithout);
-    setCurrentFiles(currentFilesWithout);
+    const filteredFiles = uploadedFiles.filter((_, idx) => idx !== id);
+    setUploadedFiles(filteredFiles);
   };
 
-  console.table(currentFiles);
   return (
     <>
       <div {...getRootProps({ style })}>
@@ -53,8 +50,8 @@ function MyDropzone() {
           <p>Drag 'n' drop some files here, or click to select files</p>
         )}
       </div>
-      {currentFiles.length ? (
-        <FileTable files={currentFiles} onDelete={DeleteCurrentUpload} />
+      {uploadedFiles.length ? (
+        <FileTable files={uploadedFiles} onDelete={DeleteCurrentUpload} />
       ) : null}
     </>
   );
