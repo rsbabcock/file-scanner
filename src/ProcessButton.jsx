@@ -1,19 +1,20 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
-import { green } from "@mui/material/colors";
+import { green, lightGreen } from "@mui/material/colors";
 import Button from "@mui/material/Button";
-import Fab from "@mui/material/Fab";
-import CheckIcon from "@mui/icons-material/Check";
-import SaveIcon from "@mui/icons-material/Save";
+import Check from "@mui/icons-material/Check";
+import LinearProgress from "@mui/material/LinearProgress";
 
 export default function ProcessButton({ uploadedFiles, setProcessedFiles }) {
   //   TODO customize this boilerplate code!
-  console.log(uploadedFiles, setProcessedFiles);
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
+
   const timer = React.useRef();
 
+  const disableButton = uploadedFiles.length >= 1 ? false : true;
+
+  console.log(disableButton, uploadedFiles.length);
   const buttonSx = {
     ...(success && {
       bgcolor: green[500],
@@ -41,51 +42,35 @@ export default function ProcessButton({ uploadedFiles, setProcessedFiles }) {
   };
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Box sx={{ m: 1, position: "relative" }}>
-        <Fab
-          aria-label="save"
-          color="primary"
-          sx={buttonSx}
-          onClick={handleButtonClick}
-        >
-          {success ? <CheckIcon /> : <SaveIcon />}
-        </Fab>
-        {loading && (
-          <CircularProgress
-            size={68}
-            sx={{
-              color: green[500],
-              position: "absolute",
-              top: -6,
-              left: -6,
-              zIndex: 1,
-            }}
-          />
-        )}
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+      }}
+    >
+      <Box sx={{ width: "50%", marginTop: "2em" }}>
+        {loading ? <LinearProgress /> : null}
+        {success ? (
+          <LinearProgress variant="determinate" value={100} color="success" />
+        ) : null}
       </Box>
       <Box sx={{ m: 1, position: "relative" }}>
         <Button
           variant="contained"
           sx={buttonSx}
-          disabled={loading}
+          disabled={disableButton}
           onClick={handleButtonClick}
         >
-          Accept terms
+          {success ? (
+            <>
+              Images Processed <Check />
+            </>
+          ) : (
+            "Process Images"
+          )}
         </Button>
-        {loading && (
-          <CircularProgress
-            size={24}
-            sx={{
-              color: green[500],
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              marginTop: "-12px",
-              marginLeft: "-12px",
-            }}
-          />
-        )}
       </Box>
     </Box>
   );
